@@ -88,7 +88,11 @@ export class FrontMatterRecordDelimiter extends FrontMatterToken {
  */
 export class FrontMatterRecord extends FrontMatterToken {
 	constructor(
-		private readonly tokens: readonly [FrontMatterRecordName, FrontMatterRecordDelimiter, FrontMatterValueToken<TValueTypeName>],
+		public override readonly tokens: readonly [
+			FrontMatterRecordName,
+			FrontMatterRecordDelimiter,
+			FrontMatterValueToken<TValueTypeName>,
+		],
 	) {
 		super(
 			BaseToken.fullRange(tokens),
@@ -163,10 +167,6 @@ export class FrontMatterRecord extends FrontMatterToken {
 		return new FrontMatterRecord([
 			token1, token2, token3,
 		]);
-	}
-
-	public override get text(): string {
-		return BaseToken.render(this.tokens);
 	}
 
 	public override toString(): string {

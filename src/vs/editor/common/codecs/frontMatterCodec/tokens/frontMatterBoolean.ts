@@ -3,11 +3,11 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { Range } from '../../../core/range.js';
 import { BaseToken } from '../../baseToken.js';
 import { Word } from '../../simpleCodec/tokens/index.js';
 import { FrontMatterValueToken } from './frontMatterToken.js';
 import { assertDefined } from '../../../../../base/common/types.js';
+import { TSimpleDecoderToken } from '../../simpleCodec/simpleDecoder.js';
 
 /**
  * Token that represents a `boolean` value in a Front Matter header.
@@ -18,17 +18,20 @@ export class FrontMatterBoolean extends FrontMatterValueToken<'boolean'> {
 	 */
 	public override readonly valueTypeName = 'boolean';
 
-	constructor(
-		range: Range,
-		public readonly value: boolean,
-	) {
-		super(range);
-	}
+	public override readonly tokens: TSimpleDecoderToken[];
 
 	/**
-	 * TODO: @legomushroom
+	 * The parsed `boolean` value represented by this token.
 	 */
-	public static fromToken(token: Word): FrontMatterBoolean {
+	public readonly value: boolean;
+
+	/**
+	 * @throws if provided {@link Word} cannot be converted to a `boolean` value.
+	 */
+	constructor(token: Word) {
+		super(token.range);
+		this.tokens = [token];
+
 		const value = asBoolean(token);
 
 		assertDefined(
@@ -36,11 +39,13 @@ export class FrontMatterBoolean extends FrontMatterValueToken<'boolean'> {
 			`Cannot convert '${token}' to a boolean value.`,
 		);
 
-		return new FrontMatterBoolean(token.range, value);
+		this.value = value;
 	}
 
 	/**
-	 * TODO: @legomushroom
+	 * Try creating a {@link FrontMatterBoolean} out of provided token.
+	 * Unlike the constructor, this method does not throw, returning
+	 * a 'null' value on failure instead.
 	 */
 	public static tryFromToken(
 		token: BaseToken,
@@ -50,15 +55,11 @@ export class FrontMatterBoolean extends FrontMatterValueToken<'boolean'> {
 		}
 
 		try {
-			return FrontMatterBoolean.fromToken(token);
+			return new FrontMatterBoolean(token);
 		} catch (_error) {
 			// noop
 			return null;
 		}
-	}
-
-	public override get text(): string {
-		return `${this.value}`;
 	}
 
 	public override toString(): string {

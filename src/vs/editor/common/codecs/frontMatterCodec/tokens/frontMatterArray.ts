@@ -22,7 +22,7 @@ export class FrontMatterArray extends FrontMatterValueToken<'array'> {
 		 * with square brackets, but tokens in the middle hold
 		 * only the value tokens, omitting commas and spaces.
 		 */
-		public readonly tokens: readonly [
+		public override readonly tokens: readonly [
 			LeftBracket,
 			...FrontMatterValueToken<TValueTypeName>[],
 			RightBracket,
@@ -46,10 +46,6 @@ export class FrontMatterArray extends FrontMatterValueToken<'array'> {
 		}
 
 		return result;
-	}
-
-	public override get text(): string {
-		return BaseToken.render(this.tokens);
 	}
 
 	public override toString(): string {

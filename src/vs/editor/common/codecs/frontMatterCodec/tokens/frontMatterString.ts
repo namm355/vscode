@@ -22,7 +22,7 @@ export class FrontMatterString<TQuote extends TQuoteToken = Quote> extends Front
 	public override readonly valueTypeName = 'quoted-string';
 
 	constructor(
-		public readonly tokens: readonly [TQuote, ...BaseToken[], TQuote],
+		public override readonly tokens: readonly [TQuote, ...BaseToken[], TQuote],
 	) {
 		super(BaseToken.fullRange(tokens));
 	}
@@ -34,10 +34,6 @@ export class FrontMatterString<TQuote extends TQuoteToken = Quote> extends Front
 		return BaseToken.render(
 			this.tokens.slice(1, this.tokens.length - 1),
 		);
-	}
-
-	public override get text(): string {
-		return BaseToken.render(this.tokens);
 	}
 
 	public override toString(): string {
