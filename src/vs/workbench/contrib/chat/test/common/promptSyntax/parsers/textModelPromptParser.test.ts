@@ -850,6 +850,40 @@ suite('TextModelPromptParser', () => {
 							),
 						]);
 					});
+
+					test('• void value', async () => {
+						const test = createTest(
+							URI.file('/absolute/folder/and/a/my.prompt.md'),
+							[
+					/* 01 */"---",
+					/* 02 */`	mode: `,
+					/* 03 */"---",
+					/* 04 */"The cactus on my desk has a thriving Instagram account.",
+							],
+							INSTRUCTIONS_LANGUAGE_ID,
+						);
+
+						await test.allSettled();
+
+						const { header, metadata } = test.parser;
+						assertDefined(
+							header,
+							'Prompt header must be defined.',
+						);
+
+						assert.strictEqual(
+							metadata.mode,
+							undefined,
+							'Mode metadata must have correct value.',
+						);
+
+						await test.validateHeaderDiagnostics([
+							new ExpectedDiagnosticError(
+								new Range(2, 8, 2, 8),
+								`Value of the 'mode' metadata must be 'string', got ''.`,
+							),
+						]);
+					});
 				});
 			});
 
@@ -1223,7 +1257,7 @@ suite('TextModelPromptParser', () => {
 		);
 	});
 
-	test('• toString() implementation', async () => {
+	test('• toString()', async () => {
 		const modelUri = URI.file('/Users/legomushroom/repos/prompt-snippets/README.md');
 		const test = createTest(
 			modelUri,
