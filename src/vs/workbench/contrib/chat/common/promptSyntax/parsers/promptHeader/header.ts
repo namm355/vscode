@@ -184,6 +184,7 @@ export class PromptHeader extends Disposable {
 			this.meta.mode = modeMetadata;
 			this.recordNames.add(recordName);
 
+			// TODO: @legomushroom - do this only if value is a string
 			return this.validateToolsAndModeCompatibility();
 		}
 
