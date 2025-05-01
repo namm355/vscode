@@ -4,6 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { Range } from '../../../core/range.js';
+import { BaseToken } from '../../baseToken.js';
 import { Word } from '../../simpleCodec/tokens/index.js';
 import { FrontMatterValueToken } from './frontMatterToken.js';
 import { assertDefined } from '../../../../../base/common/types.js';
@@ -24,6 +25,9 @@ export class FrontMatterBoolean extends FrontMatterValueToken<'boolean'> {
 		super(range);
 	}
 
+	/**
+	 * TODO: @legomushroom
+	 */
 	public static fromToken(token: Word): FrontMatterBoolean {
 		const value = asBoolean(token);
 
@@ -33,6 +37,24 @@ export class FrontMatterBoolean extends FrontMatterValueToken<'boolean'> {
 		);
 
 		return new FrontMatterBoolean(token.range, value);
+	}
+
+	/**
+	 * TODO: @legomushroom
+	 */
+	public static tryFromToken(
+		token: BaseToken,
+	): FrontMatterBoolean | null {
+		if (token instanceof Word === false) {
+			return null;
+		}
+
+		try {
+			return FrontMatterBoolean.fromToken(token);
+		} catch (_error) {
+			// noop
+			return null;
+		}
 	}
 
 	public override get text(): string {
