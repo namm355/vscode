@@ -4,11 +4,24 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { BaseToken } from '../../baseToken.js';
+import { TSimpleDecoderToken } from '../../simpleCodec/simpleDecoder.js';
 
 /**
  * Base class for all tokens inside a Front Matter header.
  */
-export abstract class FrontMatterToken extends BaseToken { }
+export abstract class FrontMatterToken extends BaseToken {
+	/**
+	 * TODO: @legomushroom
+	 */
+	public abstract readonly tokens: readonly TSimpleDecoderToken[];
+
+	/**
+	 * TODO: @legomushroom
+	 */
+	public override get text(): string {
+		return BaseToken.render(this.tokens);
+	}
+}
 
 /**
  * List of all currently supported value types.
