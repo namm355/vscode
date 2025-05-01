@@ -13,8 +13,7 @@ export abstract class FrontMatterToken extends BaseToken { }
 /**
  * List of all currently supported value types.
  */
-// TODO: @legomushroom - change string type to an object type with 'toString' implementation?
-export type TValueTypeName = 'string' | 'boolean' | 'array' | string;
+export type TValueTypeName = 'quoted-string' | 'boolean' | 'array' | string;
 
 /**
  * Base class for all tokens that represent a `value` inside a Front Matter header.

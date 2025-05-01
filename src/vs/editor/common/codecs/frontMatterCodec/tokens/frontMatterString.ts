@@ -15,11 +15,11 @@ export type TQuoteToken = Quote | DoubleQuote;
 /**
  * Token that represents a string value in a Front Matter header.
  */
-export class FrontMatterString<TQuote extends TQuoteToken = Quote> extends FrontMatterValueToken<'string'> {
+export class FrontMatterString<TQuote extends TQuoteToken = Quote> extends FrontMatterValueToken<'quoted-string'> {
 	/**
 	 * Name of the `string` value type.
 	 */
-	public override readonly valueTypeName = 'string';
+	public override readonly valueTypeName = 'quoted-string';
 
 	constructor(
 		public readonly tokens: readonly [TQuote, ...BaseToken[], TQuote],

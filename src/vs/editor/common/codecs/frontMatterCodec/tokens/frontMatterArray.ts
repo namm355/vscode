@@ -51,6 +51,7 @@ export class FrontMatterArray extends FrontMatterValueToken<'array'> {
 	public override get text(): string {
 		return BaseToken.render(this.tokens);
 	}
+
 	public override toString(): string {
 		return `front-matter-array(${this.shortText()})${this.range}`;
 	}
