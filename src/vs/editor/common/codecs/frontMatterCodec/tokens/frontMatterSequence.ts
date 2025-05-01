@@ -19,6 +19,14 @@ export class FrontMatterSequence extends FrontMatterValueToken<string> {
 		return this.text;
 	}
 
+	/**
+	 * TODO: @legomushroom
+	 */
+	// TODO: @legomushroom - trim spaces?
+	public get cleanText(): string {
+		return BaseToken.render(this.tokens);
+	}
+
 	constructor(
 		public override readonly tokens: readonly TSimpleDecoderToken[],
 	) {
