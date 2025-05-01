@@ -90,8 +90,10 @@ suite('FrontMatterDecoder', () => {
 							new DoubleQuote(new Range(2, 34, 2, 35)),
 						]),
 						new FrontMatterBoolean(
-							new Range(2, 37, 2, 37 + 4),
-							true,
+							new Word(
+								new Range(2, 37, 2, 37 + 4),
+								'true',
+							),
 						),
 						new RightBracket(new Range(2, 46, 2, 47)),
 					]),
@@ -107,8 +109,10 @@ suite('FrontMatterDecoder', () => {
 						new Space(new Range(3, 20, 3, 21)),
 					]),
 					new FrontMatterBoolean(
-						new Range(3, 22, 3, 22 + 5),
-						false,
+						new Word(
+							new Range(3, 22, 3, 22 + 5),
+							'false',
+						),
 					),
 				]),
 				new Space(new Range(3, 27, 3, 28)),
