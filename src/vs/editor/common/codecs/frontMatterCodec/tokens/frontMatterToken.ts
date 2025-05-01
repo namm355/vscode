@@ -11,12 +11,12 @@ import { TSimpleDecoderToken } from '../../simpleCodec/simpleDecoder.js';
  */
 export abstract class FrontMatterToken extends BaseToken {
 	/**
-	 * TODO: @legomushroom
+	 * Reference to the list of tokens that this token is made of.
 	 */
 	public abstract readonly tokens: readonly TSimpleDecoderToken[];
 
 	/**
-	 * TODO: @legomushroom
+	 * Get a string representation of the front matter token.
 	 */
 	public override get text(): string {
 		return BaseToken.render(this.tokens);

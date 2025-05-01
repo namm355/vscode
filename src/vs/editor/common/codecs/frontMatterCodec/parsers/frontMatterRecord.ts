@@ -190,10 +190,22 @@ export class PartialFrontMatterRecordNameWithDelimiter extends ParserBase<FrontM
  * ```
  */
 export class PartialFrontMatterRecord extends ParserBase<TSimpleDecoderToken, PartialFrontMatterRecord | FrontMatterRecord> {
+	/**
+	 * Token that represents the 'name' part of the record.
+	 */
+	private readonly recordNameToken: FrontMatterRecordName;
+
+	/**
+	 * Token that represents the 'delimiter' part of the record.
+	 */
+	private readonly recordDelimiterToken: FrontMatterRecordDelimiter;
+
 	constructor(
 		tokens: [FrontMatterRecordName, FrontMatterRecordDelimiter],
 	) {
 		super(tokens);
+		this.recordNameToken = tokens[0];
+		this.recordDelimiterToken = tokens[1];
 	}
 
 	/**
@@ -226,9 +238,9 @@ export class PartialFrontMatterRecord extends ParserBase<TSimpleDecoderToken, Pa
 				try {
 					return {
 						result: 'success',
-						nextParser: FrontMatterRecord.fromTokens([
-							this.currentTokens[0],
-							this.currentTokens[1],
+						nextParser: new FrontMatterRecord([
+							this.recordNameToken,
+							this.recordDelimiterToken,
 							nextParser,
 						]),
 						wasTokenConsumed,
@@ -295,16 +307,14 @@ export class PartialFrontMatterRecord extends ParserBase<TSimpleDecoderToken, Pa
 			(this.currentValueParser instanceof PartialFrontMatterValue)
 			|| (this.currentValueParser instanceof PartialFrontMatterSequence)
 		) {
-			this.currentTokens.push(
-				this.currentValueParser.asSequenceToken(),
-			);
+			const valueToken = this.currentValueParser.asSequenceToken();
+			this.currentTokens.push(valueToken);
 
 			this.isConsumed = true;
-			// TODO: @legomushroom - validate current tokens?
-			return FrontMatterRecord.fromTokens([
-				this.currentTokens[0],
-				this.currentTokens[1],
-				this.currentTokens[2],
+			return new FrontMatterRecord([
+				this.recordNameToken,
+				this.recordDelimiterToken,
+				valueToken,
 			]);
 		}
 
