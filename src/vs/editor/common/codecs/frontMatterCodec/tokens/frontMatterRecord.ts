@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { BaseToken } from '../../baseToken.js';
-import { Colon, Word, Dash, Space, Tab } from '../../simpleCodec/tokens/index.js';
+import { Colon, Word, Dash, Space, Tab, VerticalTab } from '../../simpleCodec/tokens/index.js';
 import { FrontMatterToken, FrontMatterValueToken, TValueTypeName } from '../tokens/frontMatterToken.js';
 
 /**
@@ -16,7 +16,7 @@ export type TNameToken = Word | Dash;
  * Type for tokens that can be used as "space" in-between record
  * name, delimiter and value.
  */
-export type TSpaceToken = Space | Tab;
+export type TSpaceToken = Space | Tab | VerticalTab;
 
 /**
  * Token representing a `record name` inside a Front Matter record.
