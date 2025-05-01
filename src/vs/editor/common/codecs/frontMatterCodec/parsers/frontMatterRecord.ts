@@ -11,6 +11,9 @@ import { assert, assertNever } from '../../../../../base/common/assert.js';
 import { Colon, Word, Dash, Space, Tab } from '../../simpleCodec/tokens/index.js';
 import { assertNotConsumed, ParserBase, TAcceptTokenResult } from '../../simpleCodec/parserBase.js';
 import { FrontMatterValueToken, FrontMatterRecordName, type TRecordNameToken, type TRecordSpaceToken, FrontMatterRecordDelimiter, FrontMatterRecord } from '../tokens/index.js';
+import { NewLine } from '../../linesCodec/tokens/newLine.js';
+import { CarriageReturn } from '../../linesCodec/tokens/carriageReturn.js';
+import { BaseToken } from '../../baseToken.js';
 
 /**
  * Tokens that can be used inside a record name.
@@ -276,14 +279,17 @@ export class PartialFrontMatterRecord extends ParserBase<TSimpleDecoderToken, Pa
 
 		// if token can start a "value" sequence, parse the value
 		if (PartialFrontMatterValue.isValueStartToken(token)) {
-			this.currentValueParser = new PartialFrontMatterValue();
+			this.currentValueParser = new PartialFrontMatterValue(shouldEndTokenSequence);
 
 			return this.accept(token);
 		}
 
 		// in all other cases, collect all the subsequent tokens into
 		// a "sequence of tokens" until a new line is found
-		this.currentValueParser = new PartialFrontMatterSequence(token);
+		this.currentValueParser = new PartialFrontMatterSequence(
+			token,
+			shouldEndTokenSequence,
+		);
 		return {
 			result: 'success',
 			nextParser: this,
@@ -324,3 +330,17 @@ export class PartialFrontMatterRecord extends ParserBase<TSimpleDecoderToken, Pa
 		);
 	}
 }
+
+/**
+ * Callback to check if a current token should end a
+ * record value that is a generic sequence of tokens.
+ */
+// TODO: @legomushroom - support other line breaks too?
+const shouldEndTokenSequence = (
+	token: BaseToken,
+): token is (NewLine | CarriageReturn) => {
+	return (
+		(token instanceof NewLine)
+		|| (token instanceof CarriageReturn)
+	);
+};
