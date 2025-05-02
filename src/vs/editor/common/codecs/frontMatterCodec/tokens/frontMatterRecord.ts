@@ -5,7 +5,7 @@
 
 import { BaseToken } from '../../baseToken.js';
 import { FrontMatterSequence } from './frontMatterSequence.js';
-import { Colon, Word, Dash, EmptySpaceToken } from '../../simpleCodec/tokens/index.js';
+import { Colon, Word, Dash, SpacingToken } from '../../simpleCodec/tokens/index.js';
 import { FrontMatterToken, FrontMatterValueToken, type TValueTypeName } from '../tokens/frontMatterToken.js';
 
 /**
@@ -53,7 +53,7 @@ export class FrontMatterRecordName extends FrontMatterToken {
  */
 export class FrontMatterRecordDelimiter extends FrontMatterToken {
 	constructor(
-		public readonly tokens: readonly [Colon, EmptySpaceToken],
+		public readonly tokens: readonly [Colon, SpacingToken],
 	) {
 		super(
 			BaseToken.fullRange(tokens),
@@ -112,7 +112,7 @@ export class FrontMatterRecord extends FrontMatterToken {
 	 * TODO: @legomushroom
 	 */
 	// TODO: @legomushroom - unit test
-	public trimValueEnd(): readonly EmptySpaceToken[] {
+	public trimValueEnd(): readonly SpacingToken[] {
 		const { valueToken } = this;
 
 		if ((valueToken instanceof FrontMatterSequence) === false) {

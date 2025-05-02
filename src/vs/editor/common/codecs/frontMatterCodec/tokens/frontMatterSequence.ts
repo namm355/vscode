@@ -5,7 +5,7 @@
 
 import { BaseToken } from '../../baseToken.js';
 import { FrontMatterValueToken } from './frontMatterToken.js';
-import { Word, EmptySpaceToken } from '../../simpleCodec/tokens/index.js';
+import { Word, SpacingToken } from '../../simpleCodec/tokens/index.js';
 import { type TSimpleDecoderToken } from '../../simpleCodec/simpleDecoder.js';
 
 /**
@@ -52,14 +52,14 @@ export class FrontMatterSequence extends FrontMatterValueToken<string> {
 	 * TODO: @legomushroom
 	 */
 	// TODO: @legomushroom - unit test
-	public trimEnd(): readonly EmptySpaceToken[] {
+	public trimEnd(): readonly SpacingToken[] {
 		const trimmedTokens = [];
 
 		let index = this.currentTokens.length - 1;
 		while (index >= 0) {
 			const token = this.currentTokens[index];
 
-			if (token instanceof EmptySpaceToken) {
+			if (token instanceof SpacingToken) {
 				trimmedTokens.push(token);
 				index--;
 
