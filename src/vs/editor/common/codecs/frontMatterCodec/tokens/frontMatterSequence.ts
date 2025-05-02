@@ -5,15 +5,8 @@
 
 import { BaseToken } from '../../baseToken.js';
 import { FrontMatterValueToken } from './frontMatterToken.js';
+import { Word, EmptySpaceToken } from '../../simpleCodec/tokens/index.js';
 import { type TSimpleDecoderToken } from '../../simpleCodec/simpleDecoder.js';
-import { Space, Tab, VerticalTab, Word } from '../../simpleCodec/tokens/index.js';
-
-/**
- * TODO: @legomushroom
- */
-export const VALID_SPACE_TOKENS = Object.freeze([
-	Space, Tab, VerticalTab,
-]);
 
 /**
  * Token represents a generic sequence of tokens in a Front Matter header.
@@ -59,13 +52,15 @@ export class FrontMatterSequence extends FrontMatterValueToken<string> {
 	 * TODO: @legomushroom
 	 */
 	// TODO: @legomushroom - unit test
-	// TODO: @legomushroom - use TSpaceToken[] for the return value instead
-	public trimEnd(): readonly TSimpleDecoderToken[] {
+	public trimEnd(): readonly EmptySpaceToken[] {
+		const trimmedTokens = [];
+
 		let index = this.currentTokens.length - 1;
 		while (index >= 0) {
 			const token = this.currentTokens[index];
 
-			if (token instanceof Space || token instanceof Tab || token instanceof VerticalTab) {
+			if (token instanceof EmptySpaceToken) {
+				trimmedTokens.push(token);
 				index--;
 
 				continue;
@@ -74,24 +69,18 @@ export class FrontMatterSequence extends FrontMatterValueToken<string> {
 			break;
 		}
 
-		const trimmedTokens = this.currentTokens.splice(index + 1);
-
 		// TODO: @legomushroom
+		this.currentTokens.length = index + 1;
 		if (this.currentTokens.length === 0) {
 			this.collapseRangeToStart();
-
 			this.currentTokens.push(
-				Word.newOnLine(
-					'',
-					this.range.startLineNumber,
-					this.range.startColumn,
-				),
+				new Word(this.range, ''),
 			);
 		}
 
 		// TODO: @legomushroom
 		this.withRange(
-			BaseToken.fullRange(this.tokens),
+			BaseToken.fullRange(this.currentTokens),
 		);
 
 		return trimmedTokens;

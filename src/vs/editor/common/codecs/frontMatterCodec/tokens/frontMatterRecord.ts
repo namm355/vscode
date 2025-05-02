@@ -4,21 +4,14 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { BaseToken } from '../../baseToken.js';
-import { TSimpleDecoderToken } from '../../simpleCodec/simpleDecoder.js';
-import { Colon, Word, Dash, Space, Tab, VerticalTab } from '../../simpleCodec/tokens/index.js';
-import { FrontMatterToken, FrontMatterValueToken, TValueTypeName } from '../tokens/frontMatterToken.js';
 import { FrontMatterSequence } from './frontMatterSequence.js';
+import { Colon, Word, Dash, EmptySpaceToken } from '../../simpleCodec/tokens/index.js';
+import { FrontMatterToken, FrontMatterValueToken, type TValueTypeName } from '../tokens/frontMatterToken.js';
 
 /**
  * Type for tokens that can be used inside a record name.
  */
 export type TNameToken = Word | Dash;
-
-/**
- * Type for tokens that can be used as "space" in-between record
- * name, delimiter and value.
- */
-export type TSpaceToken = Space | Tab | VerticalTab;
 
 /**
  * Token representing a `record name` inside a Front Matter record.
@@ -60,7 +53,7 @@ export class FrontMatterRecordName extends FrontMatterToken {
  */
 export class FrontMatterRecordDelimiter extends FrontMatterToken {
 	constructor(
-		public readonly tokens: readonly [Colon, TSpaceToken],
+		public readonly tokens: readonly [Colon, EmptySpaceToken],
 	) {
 		super(
 			BaseToken.fullRange(tokens),
@@ -119,9 +112,8 @@ export class FrontMatterRecord extends FrontMatterToken {
 	 * TODO: @legomushroom
 	 */
 	// TODO: @legomushroom - unit test
-	// TODO: @legomushroom - unit use TSpaceToken[] for the return value instead
-	public trimSequenceValueEnd(): readonly TSimpleDecoderToken[] {
-		const valueToken = this.valueToken;
+	public trimValueEnd(): readonly EmptySpaceToken[] {
+		const { valueToken } = this;
 
 		if ((valueToken instanceof FrontMatterSequence) === false) {
 			return [];

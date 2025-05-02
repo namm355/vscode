@@ -56,3 +56,8 @@ export abstract class SimpleToken extends BaseToken {
 		));
 	}
 }
+
+/**
+ * TODO: @legomushroom
+ */
+export abstract class EmptySpaceToken extends SimpleToken { }
