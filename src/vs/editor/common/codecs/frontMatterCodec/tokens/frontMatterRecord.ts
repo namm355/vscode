@@ -4,8 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { BaseToken } from '../../baseToken.js';
+import { TSimpleDecoderToken } from '../../simpleCodec/simpleDecoder.js';
 import { Colon, Word, Dash, Space, Tab, VerticalTab } from '../../simpleCodec/tokens/index.js';
 import { FrontMatterToken, FrontMatterValueToken, TValueTypeName } from '../tokens/frontMatterToken.js';
+import { FrontMatterSequence } from './frontMatterSequence.js';
 
 /**
  * Type for tokens that can be used inside a record name.
@@ -111,6 +113,28 @@ export class FrontMatterRecord extends FrontMatterToken {
 	 */
 	public get nameToken(): FrontMatterRecordName {
 		return this.tokens[0];
+	}
+
+	/**
+	 * TODO: @legomushroom
+	 */
+	// TODO: @legomushroom - unit test
+	// TODO: @legomushroom - unit use TSpaceToken[] for the return value instead
+	public trimSequenceValueEnd(): readonly TSimpleDecoderToken[] {
+		const valueToken = this.valueToken;
+
+		if ((valueToken instanceof FrontMatterSequence) === false) {
+			return [];
+		}
+
+		const trimmedTokens = valueToken.trimEnd();
+
+		// TODO: @legomushroom
+		this.withRange(
+			BaseToken.fullRange(this.tokens),
+		);
+
+		return trimmedTokens;
 	}
 
 	/**

@@ -16,6 +16,9 @@ export abstract class BaseToken {
 		private _range: Range,
 	) { }
 
+	/**
+	 * TODO: @legomushroom
+	 */
 	public get range(): Range {
 		return this._range;
 	}
@@ -59,6 +62,14 @@ export abstract class BaseToken {
 			components.endColumn ?? this.range.endColumn,
 		);
 
+		return this;
+	}
+
+	/**
+	 * TODO: @legomushroom
+	 */
+	public collapseRangeToStart(): this {
+		this._range.collapseToStart();
 		return this;
 	}
 
