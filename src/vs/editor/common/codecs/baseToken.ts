@@ -69,7 +69,8 @@ export abstract class BaseToken {
 	 * TODO: @legomushroom
 	 */
 	public collapseRangeToStart(): this {
-		this.tokenRange.collapseToStart();
+		this.tokenRange = this.tokenRange.collapseToStart();
+
 		return this;
 	}
 
