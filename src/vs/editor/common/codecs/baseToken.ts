@@ -43,8 +43,16 @@ export abstract class BaseToken {
 	/**
 	 * Check if this token is equal to another one.
 	 */
-	public equals<T extends BaseToken>(other: T): boolean {
-		if (!(other instanceof this.constructor)) {
+	public equals(other: BaseToken): other is typeof this {
+		if ((other instanceof this.constructor) === false) {
+			return false;
+		}
+
+		if (this.text.length !== other.text.length) {
+			return false;
+		}
+
+		if (this.text !== other.text) {
 			return false;
 		}
 

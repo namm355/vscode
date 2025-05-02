@@ -209,12 +209,12 @@ suite('FrontMatterDecoder', () => {
 							]),
 							new FrontMatterRecordDelimiter([
 								new Colon(new Range(3, 17, 3, 18)),
-								new Space(new Range(3, 18, 3, 19)),
+								new VerticalTab(new Range(3, 18, 3, 19)),
 							]),
 							new FrontMatterString([
 								new DoubleQuote(new Range(3, 20, 3, 21)),
-								new Word(new Range(3, 21, 3, 21 + 3), 'fal'),
-								new NewLine(new Range(3, 24, 3, 25)),
+								new Word(new Range(3, 22, 3, 22 + 3), 'fal'),
+								new NewLine(new Range(3, 25, 3, 26)),
 								new Word(new Range(4, 1, 4, 1 + 2), 'se'),
 								new DoubleQuote(new Range(4, 3, 4, 4)),
 							]),
@@ -267,6 +267,51 @@ suite('FrontMatterDecoder', () => {
 						]),
 						new Tab(new Range(2, 15, 2, 16)),
 						new Space(new Range(2, 16, 2, 17)),
+					]);
+			});
+
+			test('• array', async () => {
+				const test = disposables.add(new TestFrontMatterDecoder());
+
+				await test.run(
+					[
+						`tools\v:\t []`,
+						// 'anotherField \t\t :\v\v"fal\nse"',
+					],
+					[
+						// first record
+						new FrontMatterRecord([
+							new FrontMatterRecordName([
+								new Word(new Range(1, 1, 1, 1 + 5), 'tools'),
+							]),
+							new FrontMatterRecordDelimiter([
+								new Colon(new Range(1, 7, 1, 8)),
+								new Tab(new Range(1, 8, 1, 9)),
+							]),
+							new FrontMatterArray([
+								new LeftBracket(new Range(1, 10, 1, 11)),
+								new RightBracket(new Range(1, 11, 1, 12)),
+							]),
+						]),
+						// new Space(new Range(2, 18, 2, 19)),
+						// new NewLine(new Range(2, 19, 2, 20)),
+						// // second record
+						// new FrontMatterRecord([
+						// 	new FrontMatterRecordName([
+						// 		new Word(new Range(3, 1, 3, 1 + 12), 'anotherField'),
+						// 	]),
+						// 	new FrontMatterRecordDelimiter([
+						// 		new Colon(new Range(3, 17, 3, 18)),
+						// 		new Space(new Range(3, 18, 3, 19)),
+						// 	]),
+						// 	new FrontMatterString([
+						// 		new DoubleQuote(new Range(3, 20, 3, 21)),
+						// 		new Word(new Range(3, 21, 3, 21 + 3), 'fal'),
+						// 		new NewLine(new Range(3, 24, 3, 25)),
+						// 		new Word(new Range(4, 1, 4, 1 + 2), 'se'),
+						// 		new DoubleQuote(new Range(4, 3, 4, 4)),
+						// 	]),
+						// ]),
 					]);
 			});
 		});

@@ -15,11 +15,28 @@ export abstract class FrontMatterToken extends BaseToken {
 	 */
 	public abstract readonly tokens: readonly TSimpleDecoderToken[];
 
-	/**
-	 * Get a string representation of the front matter token.
-	 */
 	public override get text(): string {
 		return BaseToken.render(this.tokens);
+	}
+
+	// TODO: @legomushroom - extend a "composite" token
+	// TODO: @legomushroom - unit test?
+	public override equals(other: BaseToken): other is typeof this {
+		if (super.equals(other) === false) {
+			return false;
+		}
+
+		if (this.tokens.length !== other.tokens.length) {
+			return false;
+		}
+
+		for (let i = 0; i < this.tokens.length; i++) {
+			if (this.tokens[i].equals(other.tokens[i]) === false) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 }
 
