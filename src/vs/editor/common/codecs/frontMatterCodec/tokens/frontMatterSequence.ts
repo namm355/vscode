@@ -83,7 +83,8 @@ export class FrontMatterSequence extends FrontMatterValueToken<string> {
 			BaseToken.fullRange(this.currentTokens),
 		);
 
-		return trimmedTokens;
+		// TODO: @legomushroom
+		return trimmedTokens.reverse();
 	}
 
 	public override toString(): string {
